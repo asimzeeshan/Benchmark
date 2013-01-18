@@ -185,6 +185,17 @@ network_benchmark 'Softlayer, Washington, DC, USA' 'http://speedtest.wdc01.softl
 echo -e "============================================================\n" >> ~/collected_data
 
 ############################################################
+# UnixBench
+############################################################
+print_info "Downloading required packages before running UnixBench 5.1.3"
+apt-get install -y make gcc build-essential
+wget https://github.com/asimzeeshan/Benchmark/raw/master/UnixBench5.1.3-patched.tgz --no-check-certificate -q -O - | tar -xzf -
+cd UnixBench
+echo -e "UnixBench in progress" >> ~/collected_data
+print_info "UnixBench running in progress..."
+./Run -c 1 -c `grep -c processor /proc/cpuinfo` >> ~/collected_data 2>&1
+
+############################################################
 # Cleanup
 ############################################################
 print_info "Doing cleanup..."
