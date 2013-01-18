@@ -15,6 +15,19 @@ function print_warn {
     echo -e '\e[0m'
 }
 
+function network_benchmark() {
+	print_warn "Download from $1 ($2)"
+	echo "Download from $1 ($2)" >> ~/collected_data 2>&1
+	DOWNLOAD_SPEED=`wget -O /dev/null $2 2>&1 | awk '/\/dev\/null/ {speed=$3 $4} END {gsub(/\(|\)/,"",speed); print speed}'`
+	
+	print_info "Got $DOWNLOAD_SPEED"
+	echo "Got $DOWNLOAD_SPEED" >> ~/collected_data 2>&1
+}
+
+############################################################
+# Script start
+############################################################
+
 print_info "Removing old collection-data (if applicable)"
 rm -fr ~/collected_data
 echo "
@@ -31,6 +44,7 @@ We accept no responsibility for any damage this script may cause. Provided on an
 
 "
 print_warn "You can review the code at https://github.com/asimzeeshan/Benchmark if you have any concerns"
+print_warn "All data is being written to ~/collected_data file for now"
 print_info "Installing basic tools required ..."
 
 apt-get clean all && apt-get update
@@ -137,16 +151,37 @@ echo -e "============================================================\n" >> ~/co
 print_info "Performing Network tests..."
 
 echo -e "Network download test # 1" >> ~/collected_data
-cachefly=$( wget -O /dev/null http://cachefly.cachefly.net/100mb.test 2>&1 | awk '/\/dev\/null/ {speed=$3 $4} END {gsub(/\(|\)/,"",speed); print speed}' )
-echo -e "Download speed from CacheFly: $cachefly \n" >> ~/collected_data
+network_benchmark 'Cachefly' 'http://cachefly.cachefly.net/100mb.test'
 
 echo -e "Network download test # 2" >> ~/collected_data
-cachefly=$( wget -O /dev/null http://cachefly.cachefly.net/100mb.test 2>&1 | awk '/\/dev\/null/ {speed=$3 $4} END {gsub(/\(|\)/,"",speed); print speed}' )
-echo -e "Download speed from CacheFly: $cachefly \n" >> ~/collected_data
+network_benchmark 'Cachefly' 'http://cachefly.cachefly.net/100mb.test'
 
 echo -e "Network download test # 3" >> ~/collected_data
-cachefly=$( wget -O /dev/null http://cachefly.cachefly.net/100mb.test 2>&1 | awk '/\/dev\/null/ {speed=$3 $4} END {gsub(/\(|\)/,"",speed); print speed}' )
-echo -e "Download speed from CacheFly: $cachefly \n" >> ~/collected_data
+network_benchmark 'Cachefly' 'http://cachefly.cachefly.net/100mb.test'
+echo -e "============================================================\n" >> ~/collected_data
+
+############################################################
+# Extensive Network tests
+############################################################
+print_info "Performing Extensive Network tests..."
+print_warn "WARNING: This will download approx 1.5GB collectively in 100MB chunks from different providers"
+
+network_benchmark 'Cachefly' 'http://cachefly.cachefly.net/100mb.test'
+network_benchmark 'Linode, Atlanta, GA, USA' 'http://atlanta1.linode.com/100MB-atlanta.bin'
+network_benchmark 'Linode, Dallas, TX, USA' 'http://dallas1.linode.com/100MB-dallas.bin'
+network_benchmark 'Linode, Tokyo, JP' 'http://tokyo1.linode.com/100MB-tokyo.bin'
+network_benchmark 'Linode, London, UK' 'http://speedtest.london.linode.com/100MB-london.bin'
+network_benchmark 'OVH, Paris, France' 'http://proof.ovh.net/files/100Mio.dat'
+network_benchmark 'SmartDC, Rotterdam, Netherlands' 'http://mirror.i3d.net/100mb.bin'
+network_benchmark 'Hetzner, Nuremberg, Germany' 'http://hetzner.de/100MB.iso'
+network_benchmark 'iiNet, Perth, WA, Australia' 'http://ftp.iinet.net.au/test100MB.dat'
+network_benchmark 'MammothVPS, Sydney, Australia' 'http://www.mammothvpscustomer.com/test100MB.dat'
+network_benchmark 'Leaseweb, Haarlem, NL, USA' 'http://mirror.leaseweb.com/speedtest/100mb.bin'
+network_benchmark 'Softlayer, Singapore' 'http://speedtest.sng01.softlayer.com/downloads/test100.zip'
+network_benchmark 'Softlayer, Seattle, WA, USA' 'http://speedtest.sea01.softlayer.com/downloads/test100.zip'
+network_benchmark 'Softlayer, San Jose, CA, USA' 'http://speedtest.sjc01.softlayer.com/downloads/test100.zip'
+network_benchmark 'Softlayer, Washington, DC, USA' 'http://speedtest.wdc01.softlayer.com/downloads/test100.zip'
+
 echo -e "============================================================\n" >> ~/collected_data
 
 ############################################################
