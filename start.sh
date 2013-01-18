@@ -164,9 +164,8 @@ echo -e "============================================================\n" >> ~/co
 # Extensive Network tests
 ############################################################
 print_info "Performing Extensive Network tests..."
-print_warn "WARNING: This will download approx 1.5GB collectively in 100MB chunks from different providers"
+print_warn "WARNING: This will download approx 1.4GB collectively in 100MB chunks from different providers"
 
-network_benchmark 'Cachefly' 'http://cachefly.cachefly.net/100mb.test'
 network_benchmark 'Linode, Atlanta, GA, USA' 'http://atlanta1.linode.com/100MB-atlanta.bin'
 network_benchmark 'Linode, Dallas, TX, USA' 'http://dallas1.linode.com/100MB-dallas.bin'
 network_benchmark 'Linode, Tokyo, JP' 'http://tokyo1.linode.com/100MB-tokyo.bin'
