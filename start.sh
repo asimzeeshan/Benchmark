@@ -107,20 +107,17 @@ echo -e "============================================================\n" >> ~/co
 ############################################################
 print_info "Performing Classic Disk I/O tests..."
 
-echo -e "Classic Disk I/O test # 1" >> ~/collected_data
-echo -e "(dd if=/dev/zero of=iotest1 bs=64k count=16k conv=fdatasync)" >> ~/collected_data
+echo -e "Classic Disk I/O test # 1 (dd if=/dev/zero of=iotest1 bs=64k count=16k conv=fdatasync)" >> ~/collected_data
 ddtest1=$( ( dd if=/dev/zero of=iotest1 bs=64k count=16k conv=fdatasync && rm -f iotest1 ) 2>&1 ) && echo $ddtest1 >> ~/collected_data
 io=$( echo $ddtest1 | awk -F, '{io=$NF} END { print io}' )
 echo -e "I/O speed : $io \n" >> ~/collected_data
 
-echo -e "Classic Disk I/O test # 2" >> ~/collected_data
-echo -e "(dd if=/dev/zero of=iotest2 bs=64k count=16k conv=fdatasync)" >> ~/collected_data
+echo -e "Classic Disk I/O test # 2 (dd if=/dev/zero of=iotest2 bs=64k count=16k conv=fdatasync)" >> ~/collected_data
 ddtest2=$( ( dd if=/dev/zero of=iotest2 bs=64k count=16k conv=fdatasync && rm -f iotest2 ) 2>&1 ) && echo $ddtest2 >> ~/collected_data
 io=$( echo $ddtest2 | awk -F, '{io=$NF} END { print io}' )
 echo -e "I/O speed : $io \n" >> ~/collected_data
 
-echo -e "Classic Disk I/O test # 3" >> ~/collected_data
-echo -e "(dd if=/dev/zero of=iotest3 bs=64k count=16k conv=fdatasync)" >> ~/collected_data
+echo -e "Classic Disk I/O test # 3 (dd if=/dev/zero of=iotest3 bs=64k count=16k conv=fdatasync)" >> ~/collected_data
 ddtest3=$( ( dd if=/dev/zero of=iotest3 bs=64k count=16k conv=fdatasync && rm -f iotest3 ) 2>&1 ) && echo $ddtest3 >> ~/collected_data
 io=$( echo $ddtest3 | awk -F, '{io=$NF} END { print io}' )
 echo -e "I/O speed : $io \n" >> ~/collected_data
@@ -132,21 +129,18 @@ echo -e "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n" >> ~/co
 ############################################################
 print_info "Performing Advance Disk I/O tests..."
 
-echo -e "Advance Disk I/O test # 1" >> ~/collected_data
-echo -e "(dd if=/dev/zero of=iotest4 bs=1M count=1k conv=fdatasync)" >> ~/collected_data
+echo -e "Disk I/O test # 1 (dd if=/dev/zero of=iotest4 bs=1M count=1k conv=fdatasync)" >> ~/collected_data
 ddtest4=$( ( dd if=/dev/zero of=iotest4 bs=1M count=1k conv=fdatasync && rm -f iotest4 ) 2>&1 ) && echo $ddtest4 >> ~/collected_data
 io=$( echo $ddtest4 | awk -F, '{io=$NF} END { print io}' )
 echo -e "I/O speed : $io \n" >> ~/collected_data
 
-echo -e "Advance Disk I/O test # 2" >> ~/collected_data
-echo -e "(dd if=/dev/zero of=iotest5 bs=64k count=16k conv=fdatasync)" >> ~/collected_data
-ddtest5=$( ( dd if=/dev/zero of=iotest5 bs=64k count=16k conv=fdatasync && rm -f iotest5 ) 2>&1 ) && echo $ddtest5 >> ~/collected_data
+echo -e "Disk I/O test # 2 (dd if=/dev/zero of=iotest5 bs=1M count=1k oflag=dsync)" >> ~/collected_data
+ddtest5=$( ( dd if=/dev/zero of=iotest5 bs=1M count=1k oflag=dsync && rm -f iotest5 ) 2>&1 ) && echo $ddtest5 >> ~/collected_data
 io=$( echo $ddtest5 | awk -F, '{io=$NF} END { print io}' )
 echo -e "I/O speed : $io \n" >> ~/collected_data
 
-echo -e "Advance Disk I/O test # 3" >> ~/collected_data
-echo -e "(dd if=/dev/zero of=iotest6 bs=1M count=1k oflag=dsync)" >> ~/collected_data
-ddtest6=$( ( dd if=/dev/zero of=iotest6 bs=1M count=1k oflag=dsync && rm -f iotest6 ) 2>&1 ) && echo $ddtest6 >> ~/collected_data
+echo -e "Disk I/O test # 3 (dd if=/dev/zero of=iotest6 bs=64k count=16k oflag=dsync)" >> ~/collected_data
+ddtest6=$( ( dd if=/dev/zero of=iotest6 bs=64k count=16k oflag=dsync && rm -f iotest6 ) 2>&1 ) && echo $ddtest6 >> ~/collected_data
 io=$( echo $ddtest6 | awk -F, '{io=$NF} END { print io}' )
 echo -e "I/O speed : $io \n" >> ~/collected_data
 
