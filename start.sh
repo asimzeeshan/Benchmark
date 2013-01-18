@@ -80,17 +80,19 @@ print_info "Collecting general data..."
 # General data collection
 ############################################################
 cat /proc/cpuinfo | head -8 >> ~/collected_data
-echo -e "============================================================\n" >> ~/collected_data
+echo -e "------------------------------------------------------------\n" >> ~/collected_data
 cat /proc/cpuinfo >> ~/collected_data
-echo -e "============================================================\n" >> ~/collected_data
+echo -e "------------------------------------------------------------\n" >> ~/collected_data
+free >> ~/collected_data
+echo -e "------------------------------------------------------------\n" >> ~/collected_data
 free -m >> ~/collected_data
-echo -e "============================================================\n" >> ~/collected_data
+echo -e "------------------------------------------------------------\n" >> ~/collected_data
 cat /proc/meminfo >> ~/collected_data
-echo -e "============================================================\n" >> ~/collected_data
+echo -e "------------------------------------------------------------\n" >> ~/collected_data
 df -h >> ~/collected_data
-echo -e "============================================================\n" >> ~/collected_data
+echo -e "------------------------------------------------------------\n" >> ~/collected_data
 df -i >> ~/collected_data
-echo -e "============================================================\n" >> ~/collected_data
+echo -e "------------------------------------------------------------\n" >> ~/collected_data
 vmstat >> ~/collected_data
 echo -e "============================================================\n" >> ~/collected_data
 
