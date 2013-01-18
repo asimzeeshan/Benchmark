@@ -15,6 +15,12 @@ function print_warn {
     echo -e '\e[0m'
 }
 
+function print_critical {
+    echo -n -e '\e[1;37;41m'
+    echo -n $1
+    echo -e '\e[0m'
+}
+
 function network_benchmark() {
 	print_warn "Download from $1 ($2)"
 	echo "Download from $1 ($2)" >> ~/collected_data 2>&1
@@ -28,7 +34,7 @@ function network_benchmark() {
 # Script start
 ############################################################
 
-print_info "Removing old collection-data (if applicable)"
+print_critical "Removing old collection-data (if applicable)"
 rm -fr ~/collected_data
 echo "
 ###############################################################################
@@ -45,8 +51,8 @@ We accept no responsibility for any damage this script may cause. Provided on an
 "
 print_warn "You can review the code at https://github.com/asimzeeshan/Benchmark if you have any concerns"
 print_warn "All data is being written to ~/collected_data file for now"
-print_info "Installing basic tools required ..."
 
+print_info "Installing basic tools required ..."
 apt-get clean all && apt-get update
 apt-get install -y mailutils nano wget
 
@@ -146,6 +152,48 @@ echo -e "I/O speed : $io \n" >> ~/collected_data
 
 echo -e "============================================================\n" >> ~/collected_data
 
+############################################################
+# IOPing
+############################################################
+print_info "Downloading required packages before running IOPing 0.6"
+apt-get install -y make gcc build-essential
+print_info "... Done!"
+print_info "Downloading IOPing ..."
+wget http://ioping.googlecode.com/files/ioping-0.6.tar.gz -q -O - | tar -xzf -
+print_info "... Done!"
+print_info "Compiling ioping ..."
+cd ioping-0.6/
+make && make install
+cd ~
+print_info "... Done!"
+
+print_warn "IOPing I/O test ( ioping -c 10 . 2>&1 ) in progress ..."
+echo -e "IOPing I/O test ( ioping -c 10 . 2>&1 )" >> ~/collected_data
+echo "`ioping -c 10 . 2>&1 `" >> ~/collected_data
+print_warn "... Done!"
+
+echo -e "------------------------------------------------------------\n" >> ~/collected_data
+
+print_warn "IOPing seek rate test ( ioping -RD . 2>&1 ) in progress ..."
+echo -e "IOPing seek rate test ( ioping -RD . 2>&1 )" >> ~/collected_data
+echo "`ioping -RD . 2>&1 `" >> ~/collected_data
+print_warn "... Done!"
+
+echo -e "------------------------------------------------------------\n" >> ~/collected_data
+
+print_warn "IOPing sequential test ( ioping -RL . 2>&1 ) in progress ..."
+echo -e "IOPing sequential test ( ioping -RL . 2>&1 )" >> ~/collected_data
+echo "`ioping -RL . 2>&1 `" >> ~/collected_data
+print_warn "... Done!"
+
+echo -e "------------------------------------------------------------\n" >> ~/collected_data
+
+print_warn "IOPing cached test ( ioping -RC . 2>&1 ) in progress ..."
+echo -e "IOPing cached test ( ioping -RC . 2>&1 )" >> ~/collected_data
+echo "`ioping -RC . 2>&1 `" >> ~/collected_data
+print_warn "... Done!"
+
+echo -e "============================================================\n" >> ~/collected_data
 
 ############################################################
 # Network tests
@@ -166,7 +214,7 @@ echo -e "============================================================\n" >> ~/co
 # Extensive Network tests
 ############################################################
 print_info "Performing Extensive Network tests..."
-print_warn "WARNING: This will download approx 1.4GB collectively in 100MB chunks from different providers"
+print_critical "WARNING: This will download approx 1.4GB collectively in 100MB chunks from different providers"
 
 network_benchmark 'Linode, Atlanta, GA, USA' 'http://atlanta1.linode.com/100MB-atlanta.bin'
 network_benchmark 'Linode, Dallas, TX, USA' 'http://dallas1.linode.com/100MB-dallas.bin'
@@ -188,7 +236,6 @@ echo -e "============================================================\n" >> ~/co
 # UnixBench
 ############################################################
 print_info "Downloading required packages before running UnixBench 5.1.3"
-apt-get install -y make gcc build-essential
 wget https://github.com/asimzeeshan/Benchmark/raw/master/UnixBench5.1.3-patched.tgz --no-check-certificate -q -O - | tar -xzf -
 cd UnixBench
 echo -e "UnixBench in progress" >> ~/collected_data
@@ -215,7 +262,8 @@ unset ddtest6
 unset io
 unset cachefly
 
-rm -fr UnixBench5.1.3-patched.tgz
-rm -fr UnixBench
+rm -fr ~/UnixBench5.1.3-patched.tgz
+rm -fr ~/UnixBench
+rm -fr ~/ioping-0.6
 
 print_info "Done!!"
