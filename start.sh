@@ -216,4 +216,7 @@ unset ddtest6
 unset io
 unset cachefly
 
+rm -fr UnixBench5.1.3-patched.tgz
+rm -fr UnixBench
+
 print_info "Done!!"
