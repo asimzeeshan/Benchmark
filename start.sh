@@ -25,7 +25,7 @@ function network_benchmark() {
 	print_warn "Download from $1 ($2)"
 	echo "Download from $1 ($2)" >> ~/collected_data 2>&1
 	DOWNLOAD_SPEED=`wget -O /dev/null $2 2>&1 | awk '/\/dev\/null/ {speed=$3 $4} END {gsub(/\(|\)/,"",speed); print speed}'`
-	
+
 	print_info "Got $DOWNLOAD_SPEED"
 	echo "Got $DOWNLOAD_SPEED" >> ~/collected_data 2>&1
 }
@@ -149,17 +149,12 @@ echo -e "============================================================\n" >> ~/co
 ############################################################
 # IOPing
 ############################################################
-print_info "Downloading required packages before running IOPing 0.6"
-apt-get install -y make gcc build-essential
-print_info "... Done!"
-print_info "Downloading IOPing ..."
-wget http://ioping.googlecode.com/files/ioping-0.6.tar.gz -q -O - | tar -xzf -
-print_info "... Done!"
-print_info "Compiling ioping ..."
-cd ioping-0.6/
-make && make install
-cd ~
-print_info "... Done!"
+print_info "Installing required packages IOPing"
+apt-get install -y make gcc build-essential ioping
+ioping_ver=$( ioping -v )
+print_info "... Done! successfull installed $ioping_ver "
+
+echo -e "------------------------------------------------------------\n" >> ~/collected_data
 
 print_warn "IOPing I/O test ( ioping -c 10 . 2>&1 ) in progress ..."
 echo -e "IOPing I/O test ( ioping -c 10 . 2>&1 )" >> ~/collected_data
